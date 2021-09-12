@@ -20,10 +20,6 @@ services:
       - /Users/dejanstrancar/Development/nest-microservices/services/gateway:/usr/src/app/
       - /usr/src/app/node_modules
     restart: unless-stopped
-    depends_on:
-      - redis
-    links:
-      - redis
 
   accumulate:
     container_name: nestmicroservices-accumulate
@@ -43,17 +39,6 @@ services:
       - /Users/dejanstrancar/Development/nest-microservices/services/accumulate:/usr/src/app/
       - /usr/src/app/node_modules
     restart: unless-stopped
-    depends_on:
-      - redis
-    links:
-      - redis
-
-  redis:
-    image: "redis:alpine"
-    ports:
-      - 6379:6379
-    networks:
-      - webnet
 
 networks:
   webnet:
