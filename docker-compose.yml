@@ -5,7 +5,7 @@ services:
     container_name: nestmicroservices-gateway
     image: nestmicroservices/gateway:${TAG:-latest}
     environment:
-      - RABBITMQ_URL= "${RABBITMQ_URL}"
+      - RABBITMQ_URL= ${RABBITMQ_URL}
     build:
       context: ./services/gateway
       target: development
@@ -18,14 +18,14 @@ services:
       - webnet
     volumes:
       - /Users/dejanstrancar/Development/nest-microservices/services/gateway:/usr/src/app/
-      - /usr/src/app/node_modules
+      # - /usr/src/app/node_modules
     restart: unless-stopped
 
   accumulate:
     container_name: nestmicroservices-accumulate
     image: nestmicroservices/accumulate:${TAG:-latest}
     environment:
-      - RABBITMQ_URL= "${RABBITMQ_URL}"
+      - RABBITMQ_URL= ${RABBITMQ_URL}
     build:
       context: ./services/accumulate
       target: development
@@ -37,7 +37,7 @@ services:
       - webnet
     volumes:
       - /Users/dejanstrancar/Development/nest-microservices/services/accumulate:/usr/src/app/
-      - /usr/src/app/node_modules
+      # - /usr/src/app/node_modules
     restart: unless-stopped
 
 networks:
