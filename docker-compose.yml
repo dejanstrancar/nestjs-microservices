@@ -4,6 +4,8 @@ services:
   gateway:
     container_name: nestmicroservices-gateway
     image: nestmicroservices/gateway:${TAG:-latest}
+    environment:
+      - RABBITMQ_URL= "${RABBITMQ_URL}"
     build:
       context: ./services/gateway
       target: development
@@ -26,6 +28,8 @@ services:
   accumulate:
     container_name: nestmicroservices-accumulate
     image: nestmicroservices/accumulate:${TAG:-latest}
+    environment:
+      - RABBITMQ_URL= "${RABBITMQ_URL}"
     build:
       context: ./services/accumulate
       target: development

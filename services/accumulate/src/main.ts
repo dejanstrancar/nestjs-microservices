@@ -1,21 +1,28 @@
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { Transport } from '@nestjs/microservices';
+import {
+  ClientOptions,
+  MicroserviceOptions,
+  Transport,
+} from '@nestjs/microservices';
 import { AppModule } from './app.module';
 
 const logger = new Logger('Math_Main');
 
-console.log(process.env.REDIS_HOST);
-const microserviceOptions = {
-  transport: Transport.REDIS,
+const microserviceOptions: ClientOptions = {
+  transport: Transport.RMQ,
   options: {
-    host: 'redis',
-    port: 6379,
+    urls: [process.env.RABBITMQ_URL],
+    queue: 'math_queue',
+    queueOptions: {
+      durable: false,
+    },
+    noAck: false,
   },
 };
 
 async function bootstrap() {
-  const app = await NestFactory.createMicroservice(
+  const app = await NestFactory.createMicroservice<MicroserviceOptions>(
     AppModule,
     microserviceOptions,
   );
