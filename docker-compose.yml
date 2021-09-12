@@ -1,0 +1,55 @@
+version: "3"
+
+services:
+  gateway:
+    container_name: nestmicroservices-gateway
+    image: nestmicroservices/gateway:${TAG:-latest}
+    build:
+      context: ./services/gateway
+      target: development
+      dockerfile: ./Dockerfile
+    command: npm run start:debug
+    ports:
+      - 4000:4000
+      - 9229:9229
+    networks:
+      - webnet
+    volumes:
+      - /Users/dejanstrancar/Development/nest-microservices/services/gateway:/usr/src/app/
+      - /usr/src/app/node_modules
+    restart: unless-stopped
+    depends_on:
+      - redis
+    links:
+      - redis
+
+  accumulate:
+    container_name: nestmicroservices-accumulate
+    image: nestmicroservices/accumulate:${TAG:-latest}
+    build:
+      context: ./services/accumulate
+      target: development
+      dockerfile: ./Dockerfile
+    command: npm run start:debug
+    ports:
+      - 4001:4001
+    networks:
+      - webnet
+    volumes:
+      - /Users/dejanstrancar/Development/nest-microservices/services/accumulate:/usr/src/app/
+      - /usr/src/app/node_modules
+    restart: unless-stopped
+    depends_on:
+      - redis
+    links:
+      - redis
+
+  redis:
+    image: "redis:alpine"
+    ports:
+      - 6379:6379
+    networks:
+      - webnet
+
+networks:
+  webnet:
